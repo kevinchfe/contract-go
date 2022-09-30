@@ -13,8 +13,8 @@ func SetupRoute(router *gin.Engine) {
 	// 注册全局中间件
 	registerGlobalMiddleWare(router)
 
-	// 注册API路由
-	routes.RegisterApiRoutes(router)
+	// 注册小程序路由
+	routes.RegisterAppletsRoutes(router)
 
 	// 配置404路由
 	setup404Handler(router)
