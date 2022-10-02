@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"contract/app/models/user"
 	"contract/pkg/config"
 	"contract/pkg/database"
 	"errors"
@@ -43,4 +44,6 @@ func SetupDB() {
 	database.SQLDB.SetMaxIdleConns(config.GetInt("database.mysql.max_idle_connections"))
 	// 每个连接过期时间
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.GetInt("database.mysql.max_life_seconds")) * time.Second)
+
+	database.DB.AutoMigrate(&user.User{})
 }
