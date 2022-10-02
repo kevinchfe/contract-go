@@ -13,7 +13,7 @@ var viper *viper2.Viper
 // ConfigFunc 动态加载配置
 type ConfigFunc func() map[string]interface{}
 
-// ConfigFuncs 先加载到数组，loadConfig 再动态生成配置信息
+// ConfigFuncs 先加载到此数组，loadConfig 再动态生成配置信息
 var ConfigFuncs map[string]ConfigFunc
 
 func init() {
@@ -45,7 +45,7 @@ func InitConfig(env string) {
 
 func loadConfig() {
 	for name, fn := range ConfigFuncs {
-		viper.Set(name, fn)
+		viper.Set(name, fn())
 	}
 }
 
@@ -53,7 +53,7 @@ func loadEnv(envSuffix string) {
 	// 默认加载 .env 文件 如果有传参 --env=name 则加载.env.name文件
 	envPath := ".env"
 	if len(envSuffix) > 0 {
-		filePath := ".env" + envSuffix
+		filePath := ".env." + envSuffix
 		if _, err := os.Stat(filePath); err == nil {
 			envPath = filePath
 		}
