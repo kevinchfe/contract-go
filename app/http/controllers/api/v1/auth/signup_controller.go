@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// SignupController 注册控制器
 type SignupController struct {
 	v1.BaseApiController
 }
