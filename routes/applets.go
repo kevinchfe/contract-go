@@ -15,6 +15,7 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 			suc := new(auth.SignupController)
 			// 判断手机是否被注册
 			authGroup.POST("/signup/phone/exist", suc.IsPhoneExist)
+			authGroup.POST("/signup/email/exist", suc.IsEmailExist)
 		}
 
 		v1.GET("/", func(c *gin.Context) {
