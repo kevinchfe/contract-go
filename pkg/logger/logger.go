@@ -2,6 +2,7 @@ package logger
 
 import (
 	"contract/pkg/app"
+	"encoding/json"
 	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -93,4 +94,116 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int, compress bool
 		// 生产环境只记录文件
 		return zapcore.AddSync(lumberJackLogger)
 	}
+}
+
+// Dump 调试专用 不会中断程序，在终端打印除warning消息
+// 第一个参数会使用 json.Marshal渲染 ，第二个参数信息可选
+// logger.Dump(user.User{Name:"test"})
+// logger.Dump(user.User{Name:"test"}, "用户信息")
+func Dump(value interface{}, msg ...string) {
+	valueString := jsonString(value)
+	if len(msg) > 0 {
+		Logger.Warn("Dump", zap.String(msg[0], valueString))
+	} else {
+		Logger.Warn("Dump", zap.String("data", valueString))
+	}
+}
+
+// LogIf 当err!=nil时记录error等级错误
+func LogIf(err error) {
+	if err != nil {
+		Logger.Error("Error Occurred:", zap.Error(err))
+	}
+}
+
+// LogWarnIf 当err!=nil时记录warning等级日志
+func LogWarnIf(err error) {
+	if err != nil {
+		Logger.Warn("Error Occurred:", zap.Error(err))
+	}
+}
+
+// LogInfoIf 当err!=nil时记录info等级日志
+func LogInfoIf(err error) {
+	if err != nil {
+		Logger.Info("Error Occurred:", zap.Error(err))
+	}
+}
+
+// Debug 调试日志
+// logger.Debug("Database", zap.String("sql", sql))
+func Debug(ModuleName string, fields ...zap.Field) {
+	Logger.Debug(ModuleName, fields...)
+}
+
+// Info 告知类日志
+func Info(moduleName string, fields ...zap.Field) {
+	Logger.Info(moduleName, fields...)
+}
+
+// Warn 警告类日志
+func Warn(moduleName string, fields ...zap.Field) {
+	Logger.Warn(moduleName, fields...)
+}
+
+// Error 错误时记录
+func Error(moduleName string, fields ...zap.Field) {
+	Logger.Error(moduleName, fields...)
+}
+
+// Fatal 级别同Error,写完log后调用os.Exit(1)退出程序
+func Fatal(moduleName string, fields ...zap.Field) {
+	Logger.Fatal(moduleName, fields...)
+}
+
+// DebugString 记录一条字符串类型的debug日志
+// logger.DebugString("SMS", "短信内容", string(result.RawResponse))
+func DebugString(moduleName, name, msg string) {
+	Logger.Debug(moduleName, zap.String(name, msg))
+}
+
+func InfoString(moduleName, name, msg string) {
+	Logger.Info(moduleName, zap.String(name, msg))
+}
+
+func WarnString(moduleName, name, msg string) {
+	Logger.Warn(moduleName, zap.String(name, msg))
+}
+
+func ErrorString(moduleName, name, msg string) {
+	Logger.Error(moduleName, zap.String(name, msg))
+}
+
+func FatalString(moduleName, name, msg string) {
+	Logger.Fatal(moduleName, zap.String(name, msg))
+}
+
+// DebugJSON 记录对象类型的 debug 日志，使用 json.Marshal 进行编码
+// logger.DebugJSON("Auth", "读取登录用户", auth.CurrentUser())
+func DebugJSON(moduleName, name string, value interface{}) {
+	Logger.Debug(moduleName, zap.String(name, jsonString(value)))
+}
+
+func InfoJSON(moduleName, name string, value interface{}) {
+	Logger.Info(moduleName, zap.String(name, jsonString(value)))
+}
+
+func WarnJSON(moduleName, name string, value interface{}) {
+	Logger.Warn(moduleName, zap.String(name, jsonString(value)))
+}
+
+func ErrorJSON(moduleName, name string, value interface{}) {
+	Logger.Error(moduleName, zap.String(name, jsonString(value)))
+}
+
+func FatalJSON(moduleName, name string, value interface{}) {
+	Logger.Fatal(moduleName, zap.String(name, jsonString(value)))
+}
+
+func jsonString(value interface{}) string {
+	b, err := json.Marshal(value)
+	if err != nil {
+		Logger.Error("Logger", zap.String("JSON marshal error", err.Error()))
+	}
+	return string(b)
 }
