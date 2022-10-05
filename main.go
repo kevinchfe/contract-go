@@ -21,9 +21,13 @@ func main() {
 	flag.Parse()
 	config.InitConfig(env)
 
+	// 初始化logger
+	bootstrap.SetupLogger()
+
 	// 初始化DB
 	bootstrap.SetupDB()
 
+	// new 一个gin Engine实例
 	r := gin.New()
 	bootstrap.SetupRoute(r)
 	err := r.Run(":" + config.Get("app.port"))
