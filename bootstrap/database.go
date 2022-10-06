@@ -4,12 +4,13 @@ import (
 	"contract/app/models/user"
 	"contract/pkg/config"
 	"contract/pkg/database"
+	"contract/pkg/logger"
 	"errors"
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
+	//"gorm.io/gorm/logger"
 	"time"
 )
 
@@ -37,7 +38,8 @@ func SetupDB() {
 	}
 
 	// 连接数据库，并设置GORM日志模式
-	database.Connect(dbConfig, logger.Default.LogMode(logger.Info))
+	//database.Connect(dbConfig, logger.Default.LogMode(logger.Info))
+	database.Connect(dbConfig, logger.NewGormLogger())
 	// 最大连接数
 	database.SQLDB.SetMaxOpenConns(config.GetInt("database.mysql.max_open_connections"))
 	// 最大空闲连接数
