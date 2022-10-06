@@ -33,6 +33,9 @@ func main() {
 	// 初始化DB
 	bootstrap.SetupDB()
 
+	// 初始化Redis
+	bootstrap.SetupRedis()
+
 	// new 一个gin Engine实例
 	r := gin.New()
 	bootstrap.SetupRoute(r)
