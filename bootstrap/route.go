@@ -2,6 +2,7 @@
 package bootstrap
 
 import (
+	"contract/app/http/middlewares"
 	"contract/routes"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -22,8 +23,10 @@ func SetupRoute(router *gin.Engine) {
 
 func registerGlobalMiddleWare(router *gin.Engine) {
 	router.Use(
-		gin.Logger(),
-		gin.Recovery(),
+		middlewares.Logger(),
+		middlewares.Recovery(),
+		//gin.Logger(),
+		//gin.Recovery(),
 	)
 }
 
