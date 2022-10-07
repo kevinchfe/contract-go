@@ -27,7 +27,7 @@ func ConnectRedis(address string, username string, password string, db int) {
 	})
 }
 
-// NewClient创建一个新的redis连接
+// NewClient NewClient创建一个新的redis连接
 func NewClient(address string, username string, password string, db int) *RedisClient {
 	// 初始化自定义RedisClient实例
 	rds := &RedisClient{}
