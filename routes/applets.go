@@ -16,6 +16,9 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 			// 判断手机是否被注册
 			authGroup.POST("/signup/phone/exist", suc.IsPhoneExist)
 			authGroup.POST("/signup/email/exist", suc.IsEmailExist)
+			// 验证码
+			vcc := new(auth.VerifyCodeController)
+			authGroup.POST("/verify-codes/captcha", vcc.ShowCaptcha)
 		}
 
 		v1.GET("/", func(c *gin.Context) {

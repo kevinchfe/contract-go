@@ -39,6 +39,9 @@ func main() {
 	// new 一个gin Engine实例
 	r := gin.New()
 	bootstrap.SetupRoute(r)
+
+	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("aAeKkhd2MNEC0oNOXYjc", "993223"), "正确答案")
+	//logger.Dump(captcha.NewCaptcha().VerifyCaptcha("aAeKkhd2MNEC0oNOXYjc", "111111"), "错误答案")
 	err := r.Run(":" + config.Get("app.port"))
 	if err != nil {
 		fmt.Printf(err.Error())
