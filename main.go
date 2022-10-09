@@ -14,6 +14,7 @@ func init() {
 	config2.Initialize()
 }
 
+// go2 api实战
 func main() {
 	// 配置初始化
 	var env string

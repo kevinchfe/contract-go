@@ -2,10 +2,10 @@ package middlewares
 
 import (
 	"contract/pkg/logger"
+	"contract/pkg/response"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net"
-	"net/http"
 	"net/http/httputil"
 	"os"
 	"strings"
@@ -46,9 +46,10 @@ func Recovery() gin.HandlerFunc {
 					zap.Stack("stacktrace"),                    // 调用堆栈信息
 				)
 				// 返回500
-				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-					"message": "服务器内部错误，请稍后再试",
-				})
+				response.Abort500(c)
+				//c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+				//	"message": "服务器内部错误，请稍后再试",
+				//})
 			}
 
 		}()
