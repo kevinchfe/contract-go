@@ -3,6 +3,7 @@ package requests
 
 import (
 	"contract/pkg/response"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
 )
@@ -22,6 +23,7 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 		//fmt.Println(err.Error())
 		return false
 	}
+	fmt.Println(obj)
 	// 2. 表单验证
 	errs := handler(obj, c)
 	// 3. 判断验证是否通过
