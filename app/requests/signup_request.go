@@ -23,6 +23,14 @@ type SignupUsingPhoneRequest struct {
 	PasswordConfirm string `json:"password_confirm,omitempty" valid:"password_confirm"`
 }
 
+type SignupUsingEmailRequest struct {
+	Email           string `json:"email,omitempty" valid:"email"`
+	VerifyCode      string `json:"verify_code,omitempty" valid:"verify_code"`
+	Name            string `json:"name,omitempty" valid:"name"`
+	Password        string `json:"password,omitempty" valid:"password"`
+	PasswordConfirm string `json:"password_confirm,omitempty" valid:"password_confirm"`
+}
+
 func SignupPhoneExist(data interface{}, c *gin.Context) map[string][]string {
 	// 自定义验证规则
 	rules := govalidator.MapData{
@@ -97,5 +105,48 @@ func SignupUsingPhone(data interface{}, c *gin.Context) map[string][]string {
 	_data := data.(*SignupUsingPhoneRequest)
 	errs = validators.ValidatePasswordConfirm(_data.Password, _data.PasswordConfirm, errs)
 	errs = validators.ValidateVerifyCode(_data.Phone, _data.VerifyCode, errs)
+	return errs
+}
+
+// SignupUsingEmail 邮箱注册
+func SignupUsingEmail(data interface{}, c *gin.Context) map[string][]string {
+	rules := govalidator.MapData{
+		"email":            []string{"required", "min:4", "max:30", "email", "not_exists:users,email"},
+		"name":             []string{"required", "alpha_num", "between:3,20", "not_exists:users,name"},
+		"password":         []string{"required", "min:6"},
+		"password_confirm": []string{"required"},
+		"verify_code":      []string{"required", "digits:6"},
+	}
+	messages := govalidator.MapData{
+		"email": []string{
+			"required:Email必填",
+			"min:Email长度必须大于4",
+			"max:Email长度必填小于30",
+			"email:Email格式错误",
+			"not_exists:Email已被占用",
+		},
+		"name": []string{
+			"required:用户名必须",
+			"alpha_num:用户名只能为数组和字母",
+			"between:用户名长度在3-20位之间",
+			"not_exists:用户名已被占用",
+		},
+		"password": []string{
+			"required:密码必须",
+			"min:密码至少6位",
+		},
+		"password_confirm": []string{
+			"required:确认密码必须",
+		},
+		"verify_code": []string{
+			"required:验证码必须",
+			"digits:验证码长度位6位数字",
+		},
+	}
+
+	errs := validate(data, rules, messages)
+	_data := data.(*SignupUsingEmailRequest)
+	errs = validators.ValidatePasswordConfirm(_data.Password, _data.PasswordConfirm, errs)
+	errs = validators.ValidateVerifyCode(_data.Email, _data.VerifyCode, errs)
 	return errs
 }

@@ -69,6 +69,7 @@ func (sc *SignupController) IsEmailExist(c *gin.Context) {
 	})
 }
 
+// SignupUsingPhone 手机号注册
 func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
 	request := requests.SignupUsingPhoneRequest{}
 	if ok := requests.Validate(c, &request, requests.SignupUsingPhone); !ok {
@@ -78,6 +79,28 @@ func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
 	_user := user.User{
 		Name:     request.Name,
 		Phone:    request.Phone,
+		Password: request.Password,
+	}
+	_user.Create()
+	if _user.ID > 0 {
+		response.CreatedJSON(c, gin.H{
+			"data": _user,
+		})
+	} else {
+		response.Abort500(c, "创建用户失败")
+	}
+}
+
+// SignupUsingEmail 邮箱注册用户
+func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
+	request := requests.SignupUsingEmailRequest{}
+	if ok := requests.Validate(c, &request, requests.SignupUsingEmail); !ok {
+		return
+	}
+	// 验证成功，创建用户
+	_user := user.User{
+		Name:     request.Name,
+		Email:    request.Email,
 		Password: request.Password,
 	}
 	_user.Create()
