@@ -5,6 +5,7 @@ import (
 	v1 "contract/app/http/controllers/api/v1"
 	"contract/app/models/user"
 	"contract/app/requests"
+	"contract/pkg/jwt"
 	"contract/pkg/response"
 	"github.com/gin-gonic/gin"
 )
@@ -71,6 +72,7 @@ func (sc *SignupController) IsEmailExist(c *gin.Context) {
 
 // SignupUsingPhone 手机号注册
 func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
+	// 验证表单
 	request := requests.SignupUsingPhoneRequest{}
 	if ok := requests.Validate(c, &request, requests.SignupUsingPhone); !ok {
 		return
@@ -83,8 +85,11 @@ func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
 	}
 	_user.Create()
 	if _user.ID > 0 {
+		// 返回token
+		token := jwt.NewJWT().IssueToken(_user.GetStringID(), _user.Name)
 		response.CreatedJSON(c, gin.H{
-			"data": _user,
+			"token": token,
+			"data":  _user,
 		})
 	} else {
 		response.Abort500(c, "创建用户失败")
@@ -93,6 +98,7 @@ func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
 
 // SignupUsingEmail 邮箱注册用户
 func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
+	// 表单验证
 	request := requests.SignupUsingEmailRequest{}
 	if ok := requests.Validate(c, &request, requests.SignupUsingEmail); !ok {
 		return
@@ -105,8 +111,10 @@ func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
 	}
 	_user.Create()
 	if _user.ID > 0 {
+		token := jwt.NewJWT().IssueToken(_user.GetStringID(), _user.Name)
 		response.CreatedJSON(c, gin.H{
-			"data": _user,
+			"token": token,
+			"data":  _user,
 		})
 	} else {
 		response.Abort500(c, "创建用户失败")
