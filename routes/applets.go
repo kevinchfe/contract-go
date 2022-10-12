@@ -25,6 +25,11 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 			authGroup.POST("/verify-codes/phone", vcc.SendUsingPhone)
 			authGroup.POST("/verify-codes/email", vcc.SendUsingEmail)
 
+			// 登录
+			lgc := new(auth.LoginController)
+			authGroup.POST("/login/using-phone", lgc.LoginByPhone)
+			authGroup.POST("/login/using-password", lgc.LoginByPassword)
+
 		}
 
 		v1.GET("/", func(c *gin.Context) {
