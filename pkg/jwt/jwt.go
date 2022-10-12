@@ -66,7 +66,7 @@ func (jwt *JWT) ParserToken(c *gin.Context) (*JWTCustomClaims, error) {
 		validationErr, ok := err.(*jwtpkg.ValidationError)
 		if ok {
 			if validationErr.Errors == jwtpkg.ValidationErrorMalformed {
-				return nil, ErrHeaderMalFormed
+				return nil, ErrTokenMalFormed
 			} else if validationErr.Errors == jwtpkg.ValidationErrorExpired {
 				return nil, ErrTokenExpired
 			}

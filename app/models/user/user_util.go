@@ -26,3 +26,9 @@ func GetByMulti(loginID string) (userModel User) {
 	database.DB.Where("phone=?", loginID).Or("email=?", loginID).Or("name=?", loginID).First(&userModel)
 	return
 }
+
+// Get 通过id获取用户
+func Get(id string) (userModel User) {
+	database.DB.Where("id", id).First(&userModel)
+	return
+}
