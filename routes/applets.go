@@ -31,6 +31,10 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 			authGroup.POST("/login/using-password", lgc.LoginByPassword)
 			authGroup.POST("/login/refresh-token", lgc.RefreshToken)
 
+			// 重置密码
+			pwc := new(auth.PasswordController)
+			authGroup.POST("/password-reset/using-phone", pwc.ResetByPhone)
+			authGroup.POST("/password-reset/using-email", pwc.ResetByEmail)
 		}
 
 		v1.GET("/", func(c *gin.Context) {
