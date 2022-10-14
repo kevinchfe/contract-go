@@ -66,8 +66,8 @@ func ResetByEmail(data interface{}, c *gin.Context) map[string][]string {
 			"min:密码长度需大于 6",
 		},
 	}
-
 	errs := validate(data, rules, messages)
+	// 断言
 	_data := data.(*ResetByEmailRequest)
 	errs = validators.ValidateVerifyCode(_data.Email, _data.VerifyCode, errs)
 	return errs
