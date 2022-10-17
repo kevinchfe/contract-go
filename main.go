@@ -2,6 +2,7 @@ package main
 
 import (
 	"contract/app/cmd"
+	"contract/app/cmd/make"
 	"contract/bootstrap"
 	config2 "contract/config"
 	"contract/pkg/config"
@@ -41,6 +42,7 @@ func main() {
 		cmd.CmdServe,
 		cmd.CmdKey,
 		cmd.CmdPlay,
+		make.CmdMake,
 	)
 
 	// 配置默认运行的web服务
