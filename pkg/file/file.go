@@ -1,6 +1,10 @@
 package file
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+	"strings"
+)
 
 // Put 将数据存入文件
 func Put(data []byte, to string) error {
@@ -17,4 +21,9 @@ func Exists(fileCheck string) bool {
 		return false
 	}
 	return true
+}
+
+// FileNameWithoutExtension 去除文件后缀
+func FileNameWithoutExtension(fileName string) string {
+	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
