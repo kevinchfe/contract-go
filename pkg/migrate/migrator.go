@@ -93,9 +93,9 @@ func (migrator *Migrator) readAllMigrationFiles() []MigrationFile {
 		fileName := file.FileNameWithoutExtension(f.Name())
 		// 通过迁移文件的名称获取【MigrationFile】对象
 		mfile := getMigrationFile(fileName)
-		//价格判断，确保迁移文件可用，再放进migrateFiles 数组中
+		// 加个判断，确保迁移文件可用，再放进migrateFiles 数组中
 		if len(mfile.FileName) > 0 {
-			migrationFiles = append(migrateFiles, mfile)
+			migrateFiles = append(migrateFiles, mfile)
 		}
 	}
 	// 返回排序好的【MigrationFile】 数组
