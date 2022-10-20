@@ -37,3 +37,8 @@ func Get(id string) (userModel User) {
 	database.DB.Where("id", id).First(&userModel)
 	return
 }
+
+func All() (users []User) {
+	database.DB.Find(&users)
+	return
+}

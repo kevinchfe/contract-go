@@ -48,6 +48,11 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 		uc := new(controller.UsersController)
 		// 获取当前用户
 		v1.GET("/user", middlewares.AuthJWT(), uc.CurrentUser)
+		usersGroup := v1.Group("/users")
+		usersGroup.Use(middlewares.AuthJWT())
+		{
+			usersGroup.GET("", uc.Index)
+		}
 
 		v1.GET("/", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
