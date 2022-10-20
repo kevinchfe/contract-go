@@ -1,6 +1,7 @@
 package routes
 
 import (
+	controller "contract/app/http/controllers/api/v1"
 	"contract/app/http/controllers/api/v1/auth"
 	"contract/app/http/middlewares"
 	"github.com/gin-gonic/gin"
@@ -43,6 +44,10 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 			authGroup.POST("/password-reset/using-phone", middlewares.GuestJWT(), pwc.ResetByPhone)
 			authGroup.POST("/password-reset/using-email", middlewares.GuestJWT(), pwc.ResetByEmail)
 		}
+
+		uc := new(controller.UsersController)
+		// 获取当前用户
+		v1.GET("/user", middlewares.AuthJWT(), uc.CurrentUser)
 
 		v1.GET("/", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
