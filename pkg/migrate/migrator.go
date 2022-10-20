@@ -90,6 +90,20 @@ func (migrator *Migrator) Refresh() {
 	migrator.Up()
 }
 
+// Fresh Drop所有的表并重新运行所有迁移
+func (migrator *Migrator) Fresh() {
+	// 获取数据库名称，用以提示
+	dbname := database.CurrentDatabase()
+	// 删除所有表
+	err := database.DeleteAllTables()
+	console.ExitIf(err)
+	console.Success("clear up database " + dbname)
+	// 重建migrates表
+	migrator.createMigrationsTable()
+	console.Success("[migrations] table created.")
+	migrator.Up()
+}
+
 // 获取当前这个批次的值
 func (migrator *Migrator) getBatch() int {
 	batch := 1
