@@ -11,7 +11,7 @@ var CmdDBSeed = &cobra.Command{
 	Use:   "seed",
 	Short: "Insert fake data to the database",
 	Run:   runSeeders,
-	Args:  cobra.MaximumNArgs(1), // 有且只有一个参数
+	Args:  cobra.MaximumNArgs(1), // 最多有一个参数
 }
 
 func runSeeders(cmd *cobra.Command, args []string) {
