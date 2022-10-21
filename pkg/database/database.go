@@ -49,6 +49,13 @@ func DeleteAllTables() error {
 	return err
 }
 
+// TableName 获取表名称
+func TableName(obj interface{}) string {
+	stmt := &gorm.Statement{DB: DB}
+	stmt.Parse(obj)
+	return stmt.Schema.Table
+}
+
 func deleteAllSqliteTables() error {
 	var tables []string
 	// 读取所有表

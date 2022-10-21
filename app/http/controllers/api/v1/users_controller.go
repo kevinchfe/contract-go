@@ -2,6 +2,7 @@ package v1
 
 import (
 	"contract/app/models/user"
+	"contract/app/requests"
 	"contract/pkg/auth"
 	"contract/pkg/response"
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,13 @@ func (ctrl *UsersController) CurrentUser(c *gin.Context) {
 
 // Index 全部用户
 func (ctrl *UsersController) Index(c *gin.Context) {
-	data := user.All()
-	response.Data(c, data)
+	request := requests.PaginationRequest{}
+	if ok := requests.Validate(c, &request, requests.Pagination); !ok {
+		return
+	}
+	data, pager := user.Paginate(c, 10)
+	response.JSON(c, gin.H{
+		"data":  data,
+		"pager": pager,
+	})
 }
