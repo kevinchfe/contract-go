@@ -58,6 +58,7 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 		cgcGroup := v1.Group("/categories")
 		{
 			cgcGroup.POST("", middlewares.AuthJWT(), cgc.Store)
+			cgcGroup.PUT("/:id", middlewares.AuthJWT(), cgc.Update)
 		}
 
 		v1.GET("/", func(c *gin.Context) {
