@@ -13,7 +13,7 @@ type Category struct {
 	models.CommonTimestampsField
 }
 
-func (categories *Category) create() {
+func (categories *Category) Create() {
 	database.DB.Create(&categories)
 }
 

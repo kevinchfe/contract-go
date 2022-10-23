@@ -1,9 +1,5 @@
 package category
 
-import (
-	"gorm.io/gorm"
-)
-
 // func (categories *Category) BeforeSave(tx *gorm.DB) (err error) {}
 // func (categories *Category) BeforeCreate(tx *gorm.DB) (err error) {}
 // func (categories *Category) AfterCreate(tx *gorm.DB) (err error) {}

@@ -15,7 +15,7 @@ type {{StructName}} struct {
 	models.CommonTimestampsField
 }
 
-func ({{VariableName}} *{{StructName}}) create() {
+func ({{VariableName}} *{{StructName}}) Create() {
     database.DB.Create(&{{VariableName}})
 }
 
