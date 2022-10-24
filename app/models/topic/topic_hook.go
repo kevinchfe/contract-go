@@ -1,9 +1,5 @@
 package topic
 
-import (
-	"gorm.io/gorm"
-)
-
 // func (topics *Topic) BeforeSave(tx *gorm.DB) (err error) {}
 // func (topics *Topic) BeforeCreate(tx *gorm.DB) (err error) {}
 // func (topics *Topic) AfterCreate(tx *gorm.DB) (err error) {}
