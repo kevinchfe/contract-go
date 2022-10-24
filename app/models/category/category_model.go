@@ -4,6 +4,7 @@ package category
 import (
 	"contract/app/models"
 	"contract/pkg/database"
+	"time"
 )
 
 type Category struct {
@@ -11,6 +12,7 @@ type Category struct {
 	Name        string `json:"name,omitempty"`
 	Description string `json:"description,omitempty"`
 	models.CommonTimestampsField
+	DeletedAt time.Time `gorm:"column:deleted_at;index;" json:"deleted_at,omitempty"`
 }
 
 func (categories *Category) Create() {
