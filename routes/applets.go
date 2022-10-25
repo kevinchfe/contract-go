@@ -67,6 +67,7 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 		tpcGroup := v1.Group("/topics")
 		{
 			tpcGroup.POST("", middlewares.AuthJWT(), tpc.Store)
+			tpcGroup.PUT("/:id", middlewares.AuthJWT(), tpc.Update)
 		}
 
 		v1.GET("/", func(c *gin.Context) {
