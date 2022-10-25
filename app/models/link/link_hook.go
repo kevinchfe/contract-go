@@ -1,9 +1,5 @@
 package link
 
-import (
-	"gorm.io/gorm"
-)
-
 // func (links *Link) BeforeSave(tx *gorm.DB) (err error) {}
 // func (links *Link) BeforeCreate(tx *gorm.DB) (err error) {}
 // func (links *Link) AfterCreate(tx *gorm.DB) (err error) {}

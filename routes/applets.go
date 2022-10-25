@@ -73,6 +73,12 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 			tpcGroup.DELETE("/:id", middlewares.AuthJWT(), tpc.Delete)
 		}
 
+		lsc := new(controller.LinksController)
+		lscGroup := v1.Group("/links")
+		{
+			lscGroup.GET("", lsc.Index)
+		}
+
 		v1.GET("/", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"hello": "v1",
