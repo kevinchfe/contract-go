@@ -2,6 +2,7 @@ package v1
 
 import (
 	"contract/app/models/topic"
+	"contract/app/policies"
 	"contract/app/requests"
 	"contract/pkg/auth"
 	"contract/pkg/response"
@@ -41,10 +42,10 @@ func (ctrl *TopicsController) Update(c *gin.Context) {
 		return
 	}
 
-	//if ok := policies.CanModifyTopic(c, topicsModel); !ok {
-	//	response.Abort403(c)
-	//	return
-	//}
+	if ok := policies.CanModifyTopic(c, topicsModel); !ok {
+		response.Abort403(c)
+		return
+	}
 
 	request := requests.TopicRequest{}
 	if ok := requests.Validate(c, &request, requests.TopicSave); !ok {
