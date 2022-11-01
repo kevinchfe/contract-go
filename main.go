@@ -47,6 +47,7 @@ func main() {
 		make.CmdMake,
 		cmd.CmdMigrate,
 		cmd.CmdDBSeed,
+		cmd.CmdCache,
 	)
 
 	// 配置默认运行的web服务
