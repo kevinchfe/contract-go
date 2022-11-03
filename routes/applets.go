@@ -56,6 +56,7 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 			usersGroup.PUT("/email", uc.UpdateEmail)
 			usersGroup.PUT("/phone", uc.UpdatePhone)
 			usersGroup.PUT("/password", uc.UpdatePassword)
+			usersGroup.PUT("/avatar", uc.UpdateAvatar)
 		}
 
 		cgc := new(controller.CategoriesController)

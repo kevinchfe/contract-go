@@ -4,6 +4,8 @@ import (
 	"contract/app/models/user"
 	"contract/app/requests"
 	"contract/pkg/auth"
+	"contract/pkg/config"
+	"contract/pkg/file"
 	"contract/pkg/response"
 	"github.com/gin-gonic/gin"
 )
@@ -93,4 +95,21 @@ func (ctrl *UsersController) UpdatePassword(c *gin.Context) {
 		currentUser.Save()
 		response.Success(c)
 	}
+}
+
+func (ctrl *UsersController) UpdateAvatar(c *gin.Context) {
+	request := requests.UserUpdateAvatarRequest{}
+	if ok := requests.Validate(c, &request, requests.UserUpdateAvatar); !ok {
+		return
+	}
+	avatar, err := file.SavaUploadAvatar(c, request.Avatar)
+	if err != nil {
+		response.Abort500(c, "上传头像失败")
+		return
+	}
+
+	currentUser := auth.CurrentUser(c)
+	currentUser.Avatar = config.GetString("app.url") + avatar
+	currentUser.Save()
+	response.Data(c, currentUser)
 }

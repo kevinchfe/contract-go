@@ -5,6 +5,7 @@ import (
 	"contract/pkg/auth"
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
+	"mime/multipart"
 )
 
 type UserUpdateProfileRequest struct {
@@ -120,6 +121,10 @@ type UserUpdatePasswordRequest struct {
 	NewPasswordConfirm string `json:"new_password_confirm,omitempty" valid:"new_password_confirm"`
 }
 
+type UserUpdateAvatarRequest struct {
+	Avatar *multipart.FileHeader `from:"avatar" valid:"avatar"`
+}
+
 func UserUpdatePassword(data interface{}, c *gin.Context) map[string][]string {
 	rules := govalidator.MapData{
 		"password":             []string{"required", "min:6"},
@@ -145,4 +150,18 @@ func UserUpdatePassword(data interface{}, c *gin.Context) map[string][]string {
 	_data := data.(*UserUpdatePasswordRequest)
 	errs = validators.ValidatePasswordConfirm(_data.NewPassword, _data.NewPasswordConfirm, errs)
 	return errs
+}
+
+func UserUpdateAvatar(data interface{}, c *gin.Context) map[string][]string {
+	rules := govalidator.MapData{
+		"file:avatar": []string{"ext:png,jpg,jpeg", "size:20971520", "required"},
+	}
+	messages := govalidator.MapData{
+		"file:avatar": []string{
+			"required:图片必须",
+			"size:文件大小不能超过20M",
+			"ext:必须为png,jpg,jpeg格式",
+		},
+	}
+	return ValidateFile(c, data, rules, messages)
 }
