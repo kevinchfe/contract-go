@@ -52,6 +52,8 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 		usersGroup.Use(middlewares.AuthJWT())
 		{
 			usersGroup.GET("", uc.Index)
+			usersGroup.PUT("", uc.UpdateProfile)
+			usersGroup.PUT("/email", uc.UpdateEmail)
 		}
 
 		cgc := new(controller.CategoriesController)
