@@ -122,7 +122,7 @@ type UserUpdatePasswordRequest struct {
 }
 
 type UserUpdateAvatarRequest struct {
-	Avatar *multipart.FileHeader `from:"avatar" valid:"avatar"`
+	Avatar *multipart.FileHeader `form:"avatar" valid:"avatar"`
 }
 
 func UserUpdatePassword(data interface{}, c *gin.Context) map[string][]string {
@@ -153,15 +153,21 @@ func UserUpdatePassword(data interface{}, c *gin.Context) map[string][]string {
 }
 
 func UserUpdateAvatar(data interface{}, c *gin.Context) map[string][]string {
+
 	rules := govalidator.MapData{
+		// size 的单位为 bytes
+		// - 1024 bytes 为 1kb
+		// - 1048576 bytes 为 1mb
+		// - 20971520 bytes 为 20mb
 		"file:avatar": []string{"ext:png,jpg,jpeg", "size:20971520", "required"},
 	}
 	messages := govalidator.MapData{
 		"file:avatar": []string{
-			"required:图片必须",
-			"size:文件大小不能超过20M",
-			"ext:必须为png,jpg,jpeg格式",
+			"ext:ext头像只能上传 png, jpg, jpeg 任意一种的图片",
+			"size:头像文件最大不能超过 20MB",
+			"required:必须上传图片",
 		},
 	}
-	return ValidateFile(c, data, rules, messages)
+
+	return validateFile(c, data, rules, messages)
 }
