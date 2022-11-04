@@ -4,13 +4,22 @@ import (
 	controller "contract/app/http/controllers/api/v1"
 	"contract/app/http/controllers/api/v1/auth"
 	"contract/app/http/middlewares"
+	"contract/pkg/config"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 // RegisterAppletsRoutes 注册小程序路由
 func RegisterAppletsRoutes(r *gin.Engine) {
-	v1 := r.Group("/v1")
+
+	var v1 *gin.RouterGroup
+	if len(config.GetString("app.api_domain")) == 0 {
+		v1 = r.Group("/api/v1")
+	} else {
+		v1 = r.Group("/v1")
+	}
+
+	//v1 := r.Group("/v1")
 
 	// 全局限流中间件：每小时限流 这里是所有api(ip)请求加起来
 	// 同一个ip访问v1所有的api 每小时最多200个
