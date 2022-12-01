@@ -19,8 +19,6 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 		v1 = r.Group("/v1")
 	}
 
-	//v1 := r.Group("/v1")
-
 	// 全局限流中间件：每小时限流 这里是所有api(ip)请求加起来
 	// 同一个ip访问v1所有的api 每小时最多200个
 	v1.Use(middlewares.LimitIP("200-H"))
