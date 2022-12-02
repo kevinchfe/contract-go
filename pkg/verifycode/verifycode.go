@@ -43,8 +43,8 @@ func (vc *VerifyCode) SendSMS(phone string) bool {
 		return true
 	}
 	return sms.NewSMS().Send(phone, sms.Message{
-		Template: config.GetString("sms.aliyun.template_code"),
-		Data:     map[string]string{"code": code},
+		Template: config.GetString("sms.qiniu.template_code"),
+		Data:     map[string]interface{}{"code": code},
 	})
 }
 

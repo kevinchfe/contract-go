@@ -8,7 +8,7 @@ import (
 // Message 短信结构体
 type Message struct {
 	Template string
-	Data     map[string]string
+	Data     map[string]interface{}
 	Content  string
 }
 
@@ -27,12 +27,13 @@ var internalSMS *SMS
 func NewSMS() *SMS {
 	once.Do(func() {
 		internalSMS = &SMS{
-			Driver: &Aliyun{},
+			//Driver: &Aliyun{},
+			Driver: &Qiniu{},
 		}
 	})
 	return internalSMS
 }
 
 func (sms *SMS) Send(phone string, message Message) bool {
-	return sms.Driver.Send(phone, message, config.GetStringMapString("sms.aliyun"))
+	return sms.Driver.Send(phone, message, config.GetStringMapString("sms.qiniu"))
 }

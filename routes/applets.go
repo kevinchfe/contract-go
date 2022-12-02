@@ -37,7 +37,7 @@ func RegisterAppletsRoutes(r *gin.Engine) {
 			// 验证码
 			vcc := new(auth.VerifyCodeController)
 			authGroup.POST("/verify-codes/captcha", middlewares.LimitPerRoute("20-H"), vcc.ShowCaptcha)
-			authGroup.POST("/verify-codes/phone", middlewares.LimitPerRoute("20-H"), vcc.SendUsingPhone)
+			authGroup.POST("/verify-codes/phone", middlewares.LimitPerRoute("1000-H"), vcc.SendUsingPhone)
 			authGroup.POST("/verify-codes/email", middlewares.LimitPerRoute("20-H"), vcc.SendUsingEmail)
 
 			// 登录
